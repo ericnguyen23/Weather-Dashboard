@@ -39,7 +39,7 @@ function getFiveDayForecast(longtitude, latitude) {
 
         var container = document.getElementById("five-day-box");
         var card = document.createElement("div");
-        card.setAttribute("class", "card col-2");
+        card.setAttribute("class", "card col-12 col-sm-2");
         var tempPara = document.createElement("p");
         tempPara.textContent = getDegree(forecast.temp);
 
