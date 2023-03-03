@@ -82,6 +82,28 @@ function getCurrentWeather(longtitude, latitude) {
     });
 }
 
+// get current location
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(showPosition);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+}
+
+// get weather and forecast for current location
+function showPosition(position) {
+  console.log(position);
+
+  var long = position.coords.longitude;
+  var lat = position.coords.latitude;
+
+  getFiveDayForecast(long, lat);
+  getCurrentWeather(long, lat);
+}
+
+getLocation();
+
 // format degrees
 function getDegree(num) {
   var degrees = "";
