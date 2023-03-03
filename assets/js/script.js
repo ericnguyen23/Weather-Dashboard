@@ -35,16 +35,19 @@ function getFiveDayForecast(longtitude, latitude) {
       // get forecast for next 5 days
       for (var i = 0; i < 5; i++) {
         var forecast = forecastArr[i].main;
-        console.log(forecast);
+        var icon = forecastArr[i].weather[0].icon;
+        var imgUrl = "https://openweathermap.org/img/wn/";
 
         var container = document.getElementById("five-day-box");
         var card = document.createElement("div");
         card.setAttribute("class", "card col-12 col-sm-2");
-        var tempPara = document.createElement("p");
-        tempPara.textContent = getDegree(forecast.temp);
+        var imageEl = document.createElement("img");
+        imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
+        var tempHeading = document.createElement("h4");
+        tempHeading.textContent = getDegree(forecast.temp);
 
         // append
-        card.appendChild(tempPara);
+        card.append(imageEl, tempHeading);
         container.appendChild(card);
       }
     });
@@ -59,26 +62,24 @@ function getCurrentWeather(longtitude, latitude) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
-
       // get icon
       var imgUrl = "https://openweathermap.org/img/wn/";
       var icon = data.weather[0].icon;
 
       // create els
       var imageEl = document.createElement("img");
-      var tempPara = document.createElement("p");
+      var tempHeading = document.createElement("h2");
       var feelsPara = document.createElement("p");
       var humidPara = document.createElement("p");
 
       // attach data to els
       imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
-      tempPara.textContent = "Temp: " + getDegree(data.main.temp);
+      tempHeading.textContent = getDegree(data.main.temp);
       feelsPara.textContent = "Feels Like: " + getDegree(data.main.feels_like);
       humidPara.textContent = "Humidity: " + data.main.humidity;
 
       // append els
-      currentDayBox.append(imageEl, tempPara, feelsPara, humidPara);
+      currentDayBox.append(imageEl, tempHeading, feelsPara, humidPara);
     });
 }
 
@@ -94,8 +95,6 @@ function getLocation() {
 
 // get weather and forecast for current location
 function showPosition(position) {
-  console.log(position);
-
   var long = position.coords.longitude;
   var lat = position.coords.latitude;
 
