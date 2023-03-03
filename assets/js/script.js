@@ -34,6 +34,9 @@ function getFiveDayForecast(longtitude, latitude) {
 
       // get forecast for next 5 days
       for (var i = 0; i < 5; i++) {
+        console.log(forecastArr[i]);
+        // console.log(dayjs(forecastArr[i].dt_txt).format("DD/MM/YYYY"));
+
         var forecast = forecastArr[i].main;
         var icon = forecastArr[i].weather[0].icon;
         var imgUrl = "https://openweathermap.org/img/wn/";
