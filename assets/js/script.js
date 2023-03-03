@@ -62,6 +62,7 @@ function getCurrentWeather(longtitude, latitude) {
       console.log(data);
 
       // get icon
+      // icon doesn't load on safari
       var imgUrl = "http://openweathermap.org/img/wn/";
       var icon = data.weather[0].icon;
 
@@ -83,6 +84,7 @@ function getCurrentWeather(longtitude, latitude) {
 }
 
 // get current location
+// works on mobile, however doesn't prompt user to turn on location
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
