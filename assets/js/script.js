@@ -30,7 +30,23 @@ function getFiveDayForecast(longtitude, latitude) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      var forecastArr = data.list;
+
+      // get forecast for next 5 days
+      for (var i = 0; i < 5; i++) {
+        var forecast = forecastArr[i].main;
+        console.log(forecast);
+
+        var container = document.getElementById("five-day-box");
+        var card = document.createElement("div");
+        card.setAttribute("class", "card col-2");
+        var tempPara = document.createElement("p");
+        tempPara.textContent = getDegree(forecast.temp);
+
+        // append
+        card.appendChild(tempPara);
+        container.appendChild(card);
+      }
     });
 }
 
@@ -45,21 +61,33 @@ function getCurrentWeather(longtitude, latitude) {
     .then(function (data) {
       console.log(data);
 
+      // get icon
       var imgUrl = "http://openweathermap.org/img/wn/";
       var icon = data.weather[0].icon;
 
+      // create els
       var imageEl = document.createElement("img");
       var tempPara = document.createElement("p");
       var feelsPara = document.createElement("p");
       var humidPara = document.createElement("p");
 
+      // attach data to els
       imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
-      tempPara.textContent = "Temp: " + data.main.temp;
-      feelsPara.textContent = "Feels Like: " + data.main.feels_like;
+      tempPara.textContent = "Temp: " + getDegree(data.main.temp);
+      feelsPara.textContent = "Feels Like: " + getDegree(data.main.feels_like);
       humidPara.textContent = "Humidity: " + data.main.humidity;
 
+      // append els
       currentDayBox.append(imageEl, tempPara, feelsPara, humidPara);
     });
+}
+
+// format degrees
+function getDegree(num) {
+  var degrees = "";
+  var floorNum = Math.floor(num);
+  degrees = floorNum + "°F";
+  return degrees;
 }
 
 // initiate search
