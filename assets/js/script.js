@@ -62,8 +62,7 @@ function getCurrentWeather(longtitude, latitude) {
       console.log(data);
 
       // get icon
-      // icon doesn't load on safari
-      var imgUrl = "http://openweathermap.org/img/wn/";
+      var imgUrl = "https://openweathermap.org/img/wn/";
       var icon = data.weather[0].icon;
 
       // create els
