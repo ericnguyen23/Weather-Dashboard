@@ -3,6 +3,7 @@ var cityField = document.getElementById("city-field");
 var searchButton = document.getElementById("search-button");
 var currentDayBox = document.getElementById("current-day-box");
 var city = "";
+var imgUrl = "https://openweathermap.org/img/wn/";
 
 // Get cities long, lats based on city text input
 function getCoordinates(city) {
@@ -15,7 +16,6 @@ function getCoordinates(city) {
     .then(function (data) {
       var long = data[0].lon;
       var lat = data[0].lat;
-      console.log(long, lat);
       getFiveDayForecast(long, lat);
       getCurrentWeather(long, lat);
     });
@@ -33,24 +33,29 @@ function getFiveDayForecast(longtitude, latitude) {
       var forecastArr = data.list;
 
       // get forecast for next 5 days
-      for (var i = 0; i < 5; i++) {
-        console.log(forecastArr[i]);
-        // console.log(dayjs(forecastArr[i].dt_txt).format("DD/MM/YYYY"));
+      // In order to get each day at noon, start at index 4 and get the next item 8 indexes away
+      for (var i = 4; i < forecastArr.length; i += 8) {
+        // console.log(forecastArr[i]);
 
+        // set vars
         var forecast = forecastArr[i].main;
         var icon = forecastArr[i].weather[0].icon;
-        var imgUrl = "https://openweathermap.org/img/wn/";
-
         var container = document.getElementById("five-day-box");
-        var card = document.createElement("div");
-        card.setAttribute("class", "card col-12 col-sm-2");
+
+        // create els
         var imageEl = document.createElement("img");
-        imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
+        var card = document.createElement("div");
         var tempHeading = document.createElement("h4");
+        var dateEl = document.createElement("p");
+
+        // set att and set data to els
+        card.setAttribute("class", "card col-12 col-sm-2");
+        imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
         tempHeading.textContent = getDegree(forecast.temp);
+        dateEl.textContent = dayjs(forecastArr[i].dt_txt).format("dddd");
 
         // append
-        card.append(imageEl, tempHeading);
+        card.append(imageEl, tempHeading, dateEl);
         container.appendChild(card);
       }
     });
@@ -66,7 +71,6 @@ function getCurrentWeather(longtitude, latitude) {
     })
     .then(function (data) {
       // get icon
-      var imgUrl = "https://openweathermap.org/img/wn/";
       var icon = data.weather[0].icon;
 
       // create els
