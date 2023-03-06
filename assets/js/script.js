@@ -4,6 +4,7 @@ var searchButton = document.getElementById("search-button");
 var currentDayBox = document.getElementById("current-day-box");
 var city = "";
 var imgUrl = "https://openweathermap.org/img/wn/";
+var fiveDayBox = document.getElementById("five-day-box");
 
 // Get cities long, lats based on city text input
 function getCoordinates(city) {
@@ -30,6 +31,9 @@ function getFiveDayForecast(longtitude, latitude) {
       return response.json();
     })
     .then(function (data) {
+      // clear results first as to not duplicate
+      fiveDayBox.innerHTML = "";
+
       var forecastArr = data.list;
 
       // get forecast for next 5 days
@@ -40,11 +44,10 @@ function getFiveDayForecast(longtitude, latitude) {
         // set vars
         var forecast = forecastArr[i].main;
         var icon = forecastArr[i].weather[0].icon;
-        var container = document.getElementById("five-day-box");
 
         // create els
-        var imageEl = document.createElement("img");
         var card = document.createElement("div");
+        var imageEl = document.createElement("img");
         var tempHeading = document.createElement("h4");
         var dateEl = document.createElement("p");
 
@@ -56,7 +59,7 @@ function getFiveDayForecast(longtitude, latitude) {
 
         // append
         card.append(imageEl, tempHeading, dateEl);
-        container.appendChild(card);
+        fiveDayBox.appendChild(card);
       }
     });
 }
@@ -70,23 +73,36 @@ function getCurrentWeather(longtitude, latitude) {
       return response.json();
     })
     .then(function (data) {
+      // clear result
+      currentDayBox.innerHTML = "";
       // get icon
       var icon = data.weather[0].icon;
 
       // create els
+      var cityName = document.createElement("h3");
+      var dateEl = document.createElement("p");
       var imageEl = document.createElement("img");
       var tempHeading = document.createElement("h2");
       var feelsPara = document.createElement("p");
       var humidPara = document.createElement("p");
 
       // attach data to els
+      cityName.textContent = data.name;
+      dateEl.textContent = dayjs().format("dddd MM/DD/YYYY");
       imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
       tempHeading.textContent = getDegree(data.main.temp);
       feelsPara.textContent = "Feels Like: " + getDegree(data.main.feels_like);
       humidPara.textContent = "Humidity: " + data.main.humidity;
 
       // append els
-      currentDayBox.append(imageEl, tempHeading, feelsPara, humidPara);
+      currentDayBox.append(
+        cityName,
+        dateEl,
+        imageEl,
+        tempHeading,
+        feelsPara,
+        humidPara
+      );
     });
 }
 
