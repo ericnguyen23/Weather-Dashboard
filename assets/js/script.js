@@ -35,6 +35,7 @@ function getFiveDayForecast(longtitude, latitude) {
       fiveDayBox.innerHTML = "";
 
       var forecastArr = data.list;
+      console.log(forecastArr);
 
       // get forecast for next 5 days
       // In order to get each day at noon, start at index 4 and get the next item 8 indexes away
@@ -47,18 +48,24 @@ function getFiveDayForecast(longtitude, latitude) {
 
         // create els
         var card = document.createElement("div");
+        var dateEl = document.createElement("p");
         var imageEl = document.createElement("img");
         var tempHeading = document.createElement("h4");
-        var dateEl = document.createElement("p");
+        var humidEl = document.createElement("p");
+        var windEl = document.createElement("p");
 
         // set att and set data to els
         card.setAttribute("class", "card col-12 col-sm-2");
+        dateEl.textContent = dayjs(forecastArr[i].dt_txt).format(
+          "dddd MM/DD/YYYY"
+        );
         imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
         tempHeading.textContent = getDegree(forecast.temp);
-        dateEl.textContent = dayjs(forecastArr[i].dt_txt).format("dddd");
+        humidEl.textContent = "Humidity" + forecast.humidity;
+        windEl.textContent = "Wind Speed" + forecastArr[i].wind.speed + "MPH";
 
         // append
-        card.append(imageEl, tempHeading, dateEl);
+        card.append(dateEl, imageEl, tempHeading, humidEl, windEl);
         fiveDayBox.appendChild(card);
       }
     });
@@ -85,6 +92,7 @@ function getCurrentWeather(longtitude, latitude) {
       var tempHeading = document.createElement("h2");
       var feelsPara = document.createElement("p");
       var humidPara = document.createElement("p");
+      var windPara = document.createElement("p");
 
       // attach data to els
       cityName.textContent = data.name;
@@ -93,6 +101,7 @@ function getCurrentWeather(longtitude, latitude) {
       tempHeading.textContent = getDegree(data.main.temp);
       feelsPara.textContent = "Feels Like: " + getDegree(data.main.feels_like);
       humidPara.textContent = "Humidity: " + data.main.humidity;
+      windPara.textContent = "Wind: " + data.wind.speed + "MPH";
 
       // append els
       currentDayBox.append(
@@ -101,7 +110,8 @@ function getCurrentWeather(longtitude, latitude) {
         imageEl,
         tempHeading,
         feelsPara,
-        humidPara
+        humidPara,
+        windPara
       );
     });
 }
