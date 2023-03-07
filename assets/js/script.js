@@ -61,8 +61,8 @@ function getFiveDayForecast(longtitude, latitude) {
         );
         imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
         tempHeading.textContent = getDegree(forecast.temp);
-        humidEl.textContent = "Humidity" + forecast.humidity;
-        windEl.textContent = "Wind Speed" + forecastArr[i].wind.speed + "MPH";
+        humidEl.textContent = "Humidity: " + forecast.humidity;
+        windEl.textContent = "Wind Speed: " + forecastArr[i].wind.speed + "MPH";
 
         // append
         card.append(dateEl, imageEl, tempHeading, humidEl, windEl);
@@ -149,7 +149,6 @@ function getDegree(num) {
 function populateHistory(city) {
   var cityEl = document.createElement("p");
   cityEl.classList.add("cities-item");
-  cityEl.setAttribute("class", "pb-2");
   cityEl.textContent = city;
   historyBox.appendChild(cityEl);
 
