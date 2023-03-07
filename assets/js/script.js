@@ -5,6 +5,7 @@ var currentDayBox = document.getElementById("current-day-box");
 var city = "";
 var imgUrl = "https://openweathermap.org/img/wn/";
 var fiveDayBox = document.getElementById("five-day-box");
+var historyBox = document.getElementById("search-history");
 
 // Get cities long, lats based on city text input
 function getCoordinates(city) {
@@ -35,7 +36,6 @@ function getFiveDayForecast(longtitude, latitude) {
       fiveDayBox.innerHTML = "";
 
       var forecastArr = data.list;
-      console.log(forecastArr);
 
       // get forecast for next 5 days
       // In order to get each day at noon, start at index 4 and get the next item 8 indexes away
@@ -145,8 +145,26 @@ function getDegree(num) {
   return degrees;
 }
 
+// populate search history
+function populateHistory(city) {
+  var cityEl = document.createElement("p");
+  cityEl.classList.add("cities-item");
+  cityEl.setAttribute("class", "pb-2");
+  cityEl.textContent = city;
+  historyBox.appendChild(cityEl);
+
+  var cities = document.querySelectorAll(".cities-item");
+
+  for (let i = 0; i < cities.length; i++) {
+    cities[i].addEventListener("click", function () {
+      getCoordinates(cities[i].textContent);
+    });
+  }
+}
+
 // initiate search
 searchButton.addEventListener("click", function () {
   city = cityField.value;
+  populateHistory(city);
   getCoordinates(city);
 });

@@ -1,3 +1,7 @@
 p {
   margin-bottom:4px;
 }
+
+.cities-item:hover{
+  cursor: pointer;
+}
