@@ -8,6 +8,7 @@ var fiveDayBox = document.getElementById("five-day-box");
 var historyBox = document.getElementById("search-history");
 
 // Get cities long, lats based on city text input
+// this is needed for the 5 day and current weather api
 function getCoordinates(city) {
   fetch(
     `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
@@ -38,15 +39,11 @@ function getFiveDayForecast(longtitude, latitude) {
       var forecastArr = data.list;
 
       // get forecast for next 5 days
-      // In order to get each day at noon, start at index 4 and get the next item 8 indexes away
+      // In order to get each day at noon, start at index 4 and get the next item 8 index' away
       for (var i = 4; i < forecastArr.length; i += 8) {
-        // console.log(forecastArr[i]);
-
-        // set vars
         var forecast = forecastArr[i].main;
         var icon = forecastArr[i].weather[0].icon;
 
-        // create els
         var card = document.createElement("div");
         var dateEl = document.createElement("p");
         var imageEl = document.createElement("img");
@@ -61,8 +58,8 @@ function getFiveDayForecast(longtitude, latitude) {
         );
         imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
         tempHeading.textContent = getDegree(forecast.temp);
-        humidEl.textContent = "Humidity: " + forecast.humidity;
-        windEl.textContent = "Wind Speed: " + forecastArr[i].wind.speed + "MPH";
+        humidEl.innerHTML = `Humidity: ${forecast.humidity}`;
+        windEl.innerHTML = `Wind Speed: ${forecastArr[i].wind.speed}MPH`;
 
         // append
         card.append(dateEl, imageEl, tempHeading, humidEl, windEl);
@@ -85,7 +82,6 @@ function getCurrentWeather(longtitude, latitude) {
       // get icon
       var icon = data.weather[0].icon;
 
-      // create els
       var cityName = document.createElement("h3");
       var dateEl = document.createElement("p");
       var imageEl = document.createElement("img");
@@ -98,10 +94,10 @@ function getCurrentWeather(longtitude, latitude) {
       cityName.textContent = data.name;
       dateEl.textContent = dayjs().format("dddd MM/DD/YYYY");
       imageEl.setAttribute("src", imgUrl + icon + "@4x.png");
-      tempHeading.textContent = getDegree(data.main.temp);
-      feelsPara.textContent = "Feels Like: " + getDegree(data.main.feels_like);
-      humidPara.textContent = "Humidity: " + data.main.humidity;
-      windPara.textContent = "Wind: " + data.wind.speed + "MPH";
+      tempHeading.innerHTML = `${getDegree(data.main.temp)}`;
+      feelsPara.innerHTML = `Feels Like: ${getDegree(data.main.feels_like)}`;
+      humidPara.innerHTML = `Humidity ${data.main.humidity}`;
+      windPara.innerHTML = `Wind: ${data.wind.speed}MPH`;
 
       // append els
       currentDayBox.append(
@@ -117,7 +113,6 @@ function getCurrentWeather(longtitude, latitude) {
 }
 
 // get current location
-// works on mobile, however doesn't prompt user to turn on location
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -148,12 +143,12 @@ function getDegree(num) {
 // populate search history
 function populateHistory(city) {
   var cityEl = document.createElement("p");
-  cityEl.classList.add("cities-item");
-  cityEl.textContent = city;
+  cityEl.innerHTML = `<p class="cities-item">${city}</p>`;
   historyBox.appendChild(cityEl);
 
   var cities = document.querySelectorAll(".cities-item");
 
+  // add listener to each city item
   for (let i = 0; i < cities.length; i++) {
     cities[i].addEventListener("click", function () {
       getCoordinates(cities[i].textContent);
@@ -163,6 +158,7 @@ function populateHistory(city) {
 
 // initiate search
 searchButton.addEventListener("click", function () {
+  // set city to users input
   city = cityField.value;
   populateHistory(city);
   getCoordinates(city);
