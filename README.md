@@ -1,6 +1,6 @@
 # Weather-Dashboard
 
-This project utilizes JavaScript and and the [Open Weather API](https://openweathermap.org/) to create a weather dashboard. In addition, it uses [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) to get the user's current location an return current location's weather.
+This project utilizes JavaScript and and the [Open Weather API](https://openweathermap.org/) to create a weather dashboard. In addition, it uses [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) to get the user's current location an return current location's weather. [Bootstrap](https://getbootstrap.com/) and [DayJs](https://day.js.org/en/) are used for styling and date formatting.
 
 It solves the following acceptance criterias:
 
