@@ -24,4 +24,4 @@ THEN I am again presented with current and future conditions for that city
 
 ### Link to deployed site
 
-[Work Day Scheduler](https://ericnguyen23.github.io/Weather-Dashboard/)
+[Weather Dashboard](https://ericnguyen23.github.io/Weather-Dashboard/)
